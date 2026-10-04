@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="BRACE & CO. - Street Food Premium: Burger gourmet, Kebab autentico e Fritti artigianali. Menu digitale.">
+    <meta name="theme-color" content="#0D0D0D">
+    <title>BRACE & CO. — Menu Digitale</title>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  FONT - Google Fonts (Bebas Neue / Inter / Caveat)                  -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  01. DESIGN TOKENS — Palette, Tipografia, Spacing, Raggi            */
+        /*  ⚠️ MODIFICA QUI per rebrandizzare il template                      */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        :root {
+            /* Palette principale (Street Food Premium - fuoco + brace) */
+            --c-bg:             #0D0D0D;
+            --c-bg-elevated:    #171717;
+            --c-bg-soft:        #222222;
+            --c-accent:         #FF6B1A;
+            --c-accent-hover:   #FF8744;
+            --c-accent-glow:    rgba(255, 107, 26, 0.35);
+            --c-gold:           #E8C77A;
+            --c-text:           #F5F1E8;
+            --c-text-muted:     #9A9588;
+            --c-border:         rgba(255, 255, 255, 0.08);
+
+            /* Palette mappa (dark-mode style) */
+            --map-base:         #211C16;
+            --map-casing:       #100D09;
+            --map-road-main:    #6B6250;
+            --map-road-sec:     #453F33;
+            --map-road-ter:     #332E25;
+            --map-label:        #CFC5AE;
+            --map-park:         #1C2418;
+
+            /* Tipografia */
+            --f-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+            --f-body:    'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --f-accent:  'Caveat', cursive;
+
+            /* Spaziatura base (8px grid) */
+            --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
+            --space-4: 16px; --space-5: 24px; --space-6: 32px;
+            --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+            /* Raggi e ombre */
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-full: 999px;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 30px var(--c-accent-glow);
+
+            /* Transizioni */
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  02. RESET & BASE                                                   */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: var(--f-body);
+            background: var(--c-bg);
+            color: var(--c-text);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        img { max-width: 100%; display: block; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  03. UTILITY CLASSES                                                */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-5);
+        }
+
+        .eyebrow {
+            font-family: var(--f-accent);
+            font-size: 1.4rem;
+            color: var(--c-gold);
+            font-weight: 700;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+        }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  04. HERO SECTION (centrata + topbar + scroll hint)                 */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            padding: 110px 0 90px;
+            overflow: hidden;
+        }
+
+        .hero__bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(255, 107, 26, 0.25), transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(232, 199, 122, 0.10), transparent 50%),
+                linear-gradient(180deg, #1a1208 0%, #0D0D0D 100%);
+            z-index: -2;
+        }
+
+        .hero__bg::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+            opacity: 0.4;
+            mix-blend-mode: overlay;
+        }
+
+        .hero__topbar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-5) var(--space-5) 0;
+            animation: fadeDown 0.8s var(--ease-out);
+        }
+
+        .hero__logo {
+            font-family: var(--f-display);
+            font-size: 1.7rem;
+            letter-spacing: 2px;
+            color: var(--c-text);
+            line-height: 1;
+        }
+        .hero__logo em { color: var(--c-accent); font-style: normal; }
+
+        .hero__phone {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--c-border);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(8px);
+            display: grid;
+            place-items: center;
+            color: var(--c-text);
+            transition: all 0.3s var(--ease-out);
+        }
+        .hero__phone:hover {
+            background: var(--c-accent);
+            border-color: var(--c-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .hero__content { position: relative; z-index: 2; }
+
+        .hero__tag {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            background: rgba(255, 107, 26, 0.12);
+            border: 1px solid rgba(255, 107, 26, 0.3);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-5);
+            animation: fadeDown 1s var(--ease-out);
+        }
+
+        .hero__tag__dot {
+            width: 8px; height: 8px;
+            background: var(--c-accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--c-accent);
+            animation: pulse 2s infinite;
+        }
+
+        .hero__title {
+            font-family: var(--f-display);
+            font-size: clamp(3.5rem, 14vw, 8rem);
+            line-height: 0.9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: var(--space-4);
+            animation: fadeUp 1s var(--ease-out) 0.15s both;
+        }
+
+        .hero__title span {
+            display: block;
+            color: var(--c-accent);
+            font-family: var(--f-accent);
+            text-transform: lowercase;
+            font-size: 0.5em;
+            transform: rotate(-2deg);
+            margin-left: var(--space-4);
+        }
+
+        .hero__desc {
+            font-size: clamp(1rem, 3vw, 1.15rem);
+            color: var(--c-text-muted);
+            max-width: 480px;
+            margin-bottom: var(--space-6);
+            animation: fadeUp 1s var(--ease-out) 0.3s both;
+        }
+
+        .hero__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+            animation: fadeUp 1s var(--ease-out) 0.45s both;
+        }
+
+        .hero__scroll {
+            position: absolute;
+            left: 50%; bottom: var(--space-5);
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--c-text-muted);
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeUp 1s var(--ease-out) 0.6s both;
+        }
+        .hero__scroll svg { animation: scrollHint 1.8s infinite; }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  05. COMPONENTI RIUTILIZZABILI (bottoni)                            */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s var(--ease-out);
+        }
+
+        .btn--primary { background: var(--c-accent); color: #fff; box-shadow: var(--shadow-glow); }
+        .btn--primary:hover {
+            background: var(--c-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--c-accent-glow);
+        }
+        .btn--primary:active { transform: translateY(0); }
+
+        .btn--ghost {
+            border: 1px solid var(--c-border);
+            color: var(--c-text);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+        .btn--ghost:hover { border-color: var(--c-accent); background: rgba(255, 107, 26, 0.08); }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  06. FILTRO CATEGORIE (sticky su scroll)                            */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .filter-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 13, 13, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--c-border);
+            padding: var(--space-4) var(--space-5);
+        }
+
+        .filter-bar__track {
+            display: flex;
+            gap: var(--space-2);
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: var(--space-1);
+        }
+        .filter-bar__track::-webkit-scrollbar { display: none; }
+
+        .filter-chip {
+            flex-shrink: 0;
+            padding: var(--space-3) var(--space-5);
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--c-text-muted);
+            white-space: nowrap;
+            transition: all 0.3s var(--ease-out);
+        }
+        .filter-chip:hover { color: var(--c-text); border-color: var(--c-text-muted); }
+        .filter-chip.is-active {
+            background: var(--c-accent);
+            color: #fff;
+            border-color: var(--c-accent);
+            box-shadow: 0 4px 15px var(--c-accent-glow);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  07. MENU - CATEGORIE E CARDS                                       */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .menu-section { padding: var(--space-8) 0 var(--space-6); }
+
+        .menu-section__header { margin-bottom: var(--space-6); }
+
+        .menu-section__title {
+            font-family: var(--f-display);
+            font-size: clamp(2rem, 6vw, 3rem);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .menu-section__divider {
+            width: 50px; height: 3px;
+            background: var(--c-accent);
+            border-radius: 2px;
+            margin-top: var(--space-3);
+        }
+
+        .dishes-grid { display: grid; gap: var(--space-5); }
+
+        .dish-card {
+            display: grid;
+            grid-template-columns: 110px 1fr auto;
+            gap: var(--space-4);
+            align-items: center;
+            padding: var(--space-4);
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-md);
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dish-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: var(--c-accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.4s var(--ease-out);
+        }
+
+        .dish-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 107, 26, 0.3);
+            box-shadow: var(--shadow-md);
+        }
+        .dish-card:hover::before { transform: scaleY(1); }
+
+        .dish-card__image {
+            width: 110px;
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: var(--c-bg-soft);
+            flex-shrink: 0;
+        }
+        .dish-card__image img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+        .dish-card:hover .dish-card__image img { transform: scale(1.08); }
+
+        .dish-card__body { min-width: 0; }
+
+        .dish-card__name {
+            font-family: var(--f-display);
+            font-size: 1.35rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: var(--space-1);
+        }
+
+        .dish-card__desc {
+            font-size: 0.85rem;
+            color: var(--c-text-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .dish-card__price {
+            font-family: var(--f-display);
+            font-size: 1.6rem;
+            color: var(--c-accent);
+            padding-left: var(--space-3);
+            align-self: start;
+        }
+
+        .dish-card__badge {
+            position: absolute;
+            top: var(--space-3); right: var(--space-3);
+            background: var(--c-gold);
+            color: #0D0D0D;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  08. SEZIONE "DOVE SIAMO" - Mappa vettoriale con strade visibili    */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .location { padding: var(--space-8) 0; }
+
+        .location-card {
+            display: grid;
+            gap: var(--space-6);
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            overflow: hidden;
+        }
+
+        .location-card__map {
+            aspect-ratio: 16 / 10;
+            background: var(--map-base);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--c-border);
+            position: relative;
+            overflow: hidden;
+            order: -1;
+        }
+
+        .map-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .map-chip {
+            position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -200%);
+            z-index: 11;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(13, 13, 13, 0.88);
+            border: 1px solid rgba(255, 107, 26, 0.5);
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            backdrop-filter: blur(6px);
+        }
+        .map-chip::after {
+            content: "";
+            position: absolute;
+            left: 50%; top: 100%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(255, 107, 26, 0.5);
+        }
+        .map-chip__dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--c-accent);
+            box-shadow: 0 0 8px var(--c-accent);
+        }
+
+        .location-card__pulse {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 110px; height: 110px;
+            background: var(--c-accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: ripple 2.5s infinite;
+            z-index: 5;
+        }
+
+        .location-card__pin {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 44px; height: 44px;
+            background: var(--c-accent);
+            border-radius: 50% 50% 50% 0;
+            transform: translate(-50%, -100%) rotate(-45deg);
+            box-shadow: 0 0 30px var(--c-accent-glow);
+            animation: bounce 2s infinite var(--ease-spring);
+            z-index: 10;
+        }
+        .location-card__pin::after {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 14px; height: 14px;
+            background: #0D0D0D;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .location-card__info { display: grid; gap: var(--space-4); align-content: start; }
+
+        .location-card__row { display: flex; gap: var(--space-4); align-items: flex-start; }
+
+        .location-card__icon {
+            width: 40px; height: 40px;
+            flex-shrink: 0;
+            background: rgba(255, 107, 26, 0.12);
+            border-radius: var(--radius-sm);
+            display: grid;
+            place-items: center;
+            color: var(--c-accent);
+        }
+
+        .location-card__label {
+            font-size: 0.7rem;
+            color: var(--c-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 2px;
+        }
+
+        .location-card__value { font-weight: 500; line-height: 1.4; }
+        .location-card__value strong { color: var(--c-gold); font-weight: 600; }
+
+        .location-card__cta { margin-top: var(--space-4); width: 100%; }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  09. SOCIAL BAR                                                     */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .socials { display: flex; justify-content: center; gap: var(--space-3); padding: var(--space-6) 0; }
+
+        .social-link {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            display: grid;
+            place-items: center;
+            color: var(--c-text-muted);
+            transition: all 0.3s var(--ease-out);
+        }
+        .social-link:hover {
+            background: var(--c-accent);
+            border-color: var(--c-accent);
+            color: #fff;
+            transform: translateY(-3px) rotate(-5deg);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  10. FOOTER                                                         */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .footer { border-top: 1px solid var(--c-border); padding: var(--space-7) 0 var(--space-5); text-align: center; }
+        .footer__brand { font-family: var(--f-display); font-size: 1.8rem; letter-spacing: 2px; margin-bottom: var(--space-2); }
+        .footer__vat { font-size: 0.8rem; color: var(--c-text-muted); margin-bottom: var(--space-5); }
+        .footer__links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4) var(--space-5); margin-bottom: var(--space-5); }
+        .footer__link { font-size: 0.85rem; color: var(--c-text-muted); position: relative; transition: color 0.2s; }
+        .footer__link::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: -3px;
+            width: 0; height: 1px;
+            background: var(--c-accent);
+            transition: width 0.3s var(--ease-out);
+        }
+        .footer__link:hover { color: var(--c-accent); }
+        .footer__link:hover::after { width: 100%; }
+        .footer__copy { font-size: 0.75rem; color: var(--c-text-muted); opacity: 0.6; }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  11. MODAL (Policy e Termini)                                       */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: grid;
+            place-items: center;
+            padding: var(--space-5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal.is-open { opacity: 1; pointer-events: auto; }
+
+        .modal__content {
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-7) var(--space-6);
+            max-width: 560px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s var(--ease-spring);
+        }
+        .modal.is-open .modal__content { transform: scale(1) translateY(0); }
+
+        .modal__close {
+            position: absolute;
+            top: var(--space-4); right: var(--space-4);
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--c-bg-soft);
+            display: grid;
+            place-items: center;
+            transition: all 0.2s;
+        }
+        .modal__close:hover { background: var(--c-accent); transform: rotate(90deg); }
+
+        .modal__title { font-family: var(--f-display); font-size: 1.8rem; letter-spacing: 1px; margin-bottom: var(--space-4); }
+        .modal__body { color: var(--c-text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .modal__body p { margin-bottom: var(--space-3); }
+        .modal__body h4 { color: var(--c-text); font-size: 1rem; margin: var(--space-4) 0 var(--space-2); }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  12. COOKIE BANNER                                                  */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        .cookie-banner {
+            position: fixed;
+            left: var(--space-4); right: var(--space-4);
+            bottom: var(--space-4);
+            z-index: 999;
+            background: var(--c-bg-elevated);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(150%);
+            transition: transform 0.5s var(--ease-spring);
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .cookie-banner.is-visible { transform: translateY(0); }
+        .cookie-banner__title { font-family: var(--f-display); font-size: 1.2rem; letter-spacing: 1px; margin-bottom: var(--space-2); }
+        .cookie-banner__text { font-size: 0.85rem; color: var(--c-text-muted); margin-bottom: var(--space-4); }
+        .cookie-banner__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+        .cookie-banner__actions .btn { flex: 1; min-width: 110px; padding: var(--space-3) var(--space-4); font-size: 0.85rem; }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  13. KEYFRAMES                                                      */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        @keyframes fadeUp   { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse    { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes bounce   { 0%, 100% { transform: translate(-50%, -100%) rotate(-45deg); } 50% { transform: translate(-50%, -112%) rotate(-45deg); } }
+        @keyframes ripple   { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
+        @keyframes scrollHint { 0%, 100% { transform: translateY(0); opacity: 0.6; } 50% { transform: translateY(6px); opacity: 1; } }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  14. BREAKPOINT - TABLET (>= 768px)                                 */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        @media (min-width: 768px) {
+            .dishes-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+            .dish-card { padding: var(--space-5); gap: var(--space-5); grid-template-columns: 130px 1fr auto; }
+            .dish-card__image { width: 130px; }
+            .dish-card__name { font-size: 1.5rem; }
+            .dish-card__price { font-size: 1.8rem; }
+            .location-card { grid-template-columns: 1fr 1fr; padding: var(--space-7); }
+            .location-card__map { order: 0; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  15. BREAKPOINT - DESKTOP (>= 1024px)                               */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        @media (min-width: 1024px) {
+            .hero { padding: 130px 0 110px; }
+            .hero__content { max-width: 720px; }
+            .container { padding: 0 var(--space-7); }
+            .hero__topbar { padding: var(--space-6) var(--space-7) 0; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════ */
+        /*  16. ACCESSIBILITÀ - reduced motion                                 */
+        /* ═══════════════════════════════════════════════════════════════════ */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  HERO SECTION (topbar + contenuto centrato + scroll hint)           -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <header class="hero" role="banner">
+        <div class="hero__bg" aria-hidden="true"></div>
+
+        <!-- Topbar: monogramma + pulsante chiamata -->
+        <div class="hero__topbar">
+            <div class="hero__logo">B<em>&amp;</em>CO.</div>
+            <a href="tel:+390212345678" class="hero__phone" aria-label="Chiama Brace & Co.">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Contenuto principale centrato -->
+        <div class="container hero__content">
+            <div class="hero__tag">
+                <span class="hero__tag__dot" aria-hidden="true"></span>
+                Street Food Premium
+            </div>
+            <h1 class="hero__title">Brace &amp; Co.<span>dal 2018</span></h1>
+            <p class="hero__desc">
+                Burger gourmet, kebab autentico e fritti artigianali. Ingredienti freschi,
+                carni selezionate e una passione che si sente a ogni morso.
+            </p>
+            <div class="hero__actions">
+                <a href="#menu" class="btn btn--primary">
+                    Esplora il Menu
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#location" class="btn btn--ghost">Dove Siamo</a>
+            </div>
+        </div>
+
+        <!-- Indicatore di scroll -->
+        <a href="#menu" class="hero__scroll" aria-label="Scorri per vedere il menu">
+            Scorri
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+    </header>
+
+    <main>
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  FILTRO CATEGORIE                                               -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <nav class="filter-bar" aria-label="Filtra menu">
+            <div class="filter-bar__track" role="tablist">
+                <button class="filter-chip is-active" data-filter="all"      role="tab" aria-selected="true">Tutto il menu</button>
+                <button class="filter-chip"           data-filter="burger"   role="tab" aria-selected="false">🍔 I Nostri Burger</button>
+                <button class="filter-chip"           data-filter="kebab"    role="tab" aria-selected="false">🥙 Specialità Kebab</button>
+                <button class="filter-chip"           data-filter="fritti"   role="tab" aria-selected="false">🍟 Sfizi e Fritti</button>
+                <button class="filter-chip"           data-filter="beverage" role="tab" aria-selected="false">🥤 Bevande</button>
+            </div>
+        </nav>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  MENU - SEZIONE 1: I NOSTRI BURGER (9 piatti)                   -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="menu-section" id="menu" data-category="burger">
+            <div class="container">
+                <header class="menu-section__header reveal">
+                    <span class="eyebrow">La nostra firma</span>
+                    <h2 class="menu-section__title">I Nostri Burger</h2>
+                    <div class="menu-section__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="dishes-grid">
+                    <!-- Piatto 1: Smash Inferno -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c49126.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c44752.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Smash+Inferno"
+                                 alt="Smash Inferno: doppio smash di manzo con cheddar fuso e cipolla caramellata"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Smash Inferno</h3>
+                            <p class="dish-card__desc">Doppio smash di manzo 180g, cheddar fuso, cipolla caramellata al bourbon, salsa segreta della casa e bacon croccante.</p>
+                        </div>
+                        <div class="dish-card__price">€12,50</div>
+                        <span class="dish-card__badge">Best Seller</span>
+                    </article>
+
+                    <!-- Piatto 2: Bacon King -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c42267.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c44053.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Bacon+King"
+                                 alt="Bacon King: burger con bacon croccante, provola affumicata e maionese al tartufo"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Bacon King</h3>
+                            <p class="dish-card__desc">Burger 200g di scottona, provola affumicata, bacon croccante a doppia cottura, lattuga romana e maionese al tartufo nero.</p>
+                        </div>
+                        <div class="dish-card__price">€13,00</div>
+                    </article>
+
+                    <!-- Piatto 3: Veggie Hell -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/540feb7a8-7f51-48a8-a29c-ac4baddd47c42616.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c47658.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Veggie+Hell"
+                                 alt="Veggie Hell: burger vegetale ai fagioli neri con verdure fresche"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Veggie Hell</h3>
+                            <p class="dish-card__desc">Patty vegetale ai fagioli neri, jalapeños freschi, guacamole artigianale, pomodoro confit e salsa chipotle affumicata.</p>
+                        </div>
+                        <div class="dish-card__price">€11,00</div>
+                    </article>
+
+                    <!-- Piatto 4: Blue Beast -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/040feb7a8-7f51-48a8-a29c-ac4baddd47c46806.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/440feb7a8-7f51-48a8-a29c-ac4baddd47c42768.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Blue+Beast"
+                                 alt="Blue Beast: burger con gorgonzola DOP cremoso e noci tostate"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Blue Beast</h3>
+                            <p class="dish-card__desc">Burger di fassona piemontese, gorgonzola DOP cremoso, noci tostate, rucola selvatica e miele di castagno IGP.</p>
+                        </div>
+                        <div class="dish-card__price">€14,50</div>
+                        <span class="dish-card__badge">Novità</span>
+                    </article>
+
+                    <!-- Piatto 16: Crispy Chicken Slam -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62304800.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62302198.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Crispy+Chicken"
+                                 alt="Crispy Chicken Slam: panino con pollo fritto croccante, cavolo cappuccio e salsa spicy"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Crispy Chicken Slam</h3>
+                            <p class="dish-card__desc">Petto di pollo fritto ultra-croccante, coleslaw al cavolo rosso, coriandolo fresco e mayo spicy della casa.</p>
+                        </div>
+                        <div class="dish-card__price">€11,50</div>
+                        <span class="dish-card__badge">Novità</span>
+                    </article>
+
+                    <!-- Piatto 17: BBQ Onion Crunch -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/3723e8c20-0780-467b-bb30-6363326d62307197.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62306141.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=BBQ+Onion+Crunch"
+                                 alt="BBQ Onion Crunch: burger con bacon, cheddar e anelli di cipolla croccanti"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">BBQ Onion Crunch</h3>
+                            <p class="dish-card__desc">Patty di scottona, bacon affumicato, cheddar fuso, anelli di cipolla croccanti e salsa BBQ glassata.</p>
+                        </div>
+                        <div class="dish-card__price">€12,00</div>
+                    </article>
+
+                    <!-- Piatto 18: Double Cheese Deluxe -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62306604.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/3723e8c20-0780-467b-bb30-6363326d62303824.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Double+Cheese"
+                                 alt="Double Cheese Deluxe: doppio patty con doppio cheddar fuso, pomodoro e cipolla rossa"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Double Cheese Deluxe</h3>
+                            <p class="dish-card__desc">Doppio patty 150g, doppio cheddar fuso, pomodoro cuore di bue, cipolla rossa di Tropea e burger sauce.</p>
+                        </div>
+                        <div class="dish-card__price">€13,50</div>
+                    </article>
+
+                    <!-- Piatto 19: Funghi & Provola -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62305230.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62305754.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Funghi+e+Provola"
+                                 alt="Funghi & Provola: burger con provola fusa, funghi porcini trifolati e cipolla grigliata"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Funghi &amp; Provola</h3>
+                            <p class="dish-card__desc">Patty di manzo, provola affumicata fusa, funghi porcini trifolati al timo e cipolla grigliata alla brace.</p>
+                        </div>
+                        <div class="dish-card__price">€12,50</div>
+                    </article>
+
+                    <!-- Piatto 20: Tex-Mex Rebel -->
+                    <article class="dish-card reveal" data-category="burger">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62302587.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/6723e8c20-0780-467b-bb30-6363326d62309304.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Tex-Mex+Rebel"
+                                 alt="Tex-Mex Rebel: burger con guacamole, cheddar fuso e salsa roja"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Tex-Mex Rebel</h3>
+                            <p class="dish-card__desc">Patty di manzo, guacamole caldo, cheddar fuso, salsa roja piccante e tortilla chips sbriciolate.</p>
+                        </div>
+                        <div class="dish-card__price">€12,50</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  MENU - SEZIONE 2: SPECIALITÀ KEBAB (8 piatti)                  -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="menu-section" data-category="kebab">
+            <div class="container">
+                <header class="menu-section__header reveal">
+                    <span class="eyebrow">Tradizione &amp; brace</span>
+                    <h2 class="menu-section__title">Specialità Kebab</h2>
+                    <div class="menu-section__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="dishes-grid">
+                    <!-- Piatto 5: Kebab Reale -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/060feb7a8-7f51-48a8-a29c-ac4baddd47c49627.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/440feb7a8-7f51-48a8-a29c-ac4baddd47c41951.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Kebab+Reale"
+                                 alt="Kebab Reale: pita con agnello marinato, pomodoro e prezzemolo"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Kebab Reale</h3>
+                            <p class="dish-card__desc">Agnello marinato 24h con spezie orientali, pane pita artigianale, salsa yogurt e menta, pomodori secchi e cipolla rossa.</p>
+                        </div>
+                        <div class="dish-card__price">€10,50</div>
+                    </article>
+
+                    <!-- Piatto 6: Doner Royal -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/260feb7a8-7f51-48a8-a29c-ac4baddd47c43481.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c46458.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Doner+Royal"
+                                 alt="Doner Royal: wrap di doner misto con verdure e salse"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Doner Royal</h3>
+                            <p class="dish-card__desc">Doner misto vitello e pollo, hummus cremoso, chicchi di melograno, cetrioli in agrodolce e salsa tahina tostata.</p>
+                        </div>
+                        <div class="dish-card__price">€11,00</div>
+                    </article>
+
+                    <!-- Piatto 7: Falafel Wrap -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/840feb7a8-7f51-48a8-a29c-ac4baddd47c49152.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/440feb7a8-7f51-48a8-a29c-ac4baddd47c49628.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Falafel+Wrap"
+                                 alt="Falafel Wrap: piadina con falafel di ceci, pomodorini e salsa tahina"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Falafel Wrap</h3>
+                            <p class="dish-card__desc">Falafel di ceci artigianali, insalata croccante, tabbouleh libanese, salsa harissa piccante e yogurt greco.</p>
+                        </div>
+                        <div class="dish-card__price">€9,50</div>
+                    </article>
+
+                    <!-- Piatto 21: Piatto Kebab Royale -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/6723e8c20-0780-467b-bb30-6363326d62308916.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62301017.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Piatto+Kebab"
+                                 alt="Piatto Kebab Royale: doner tagliato al coltello con patatine, insalata e salse"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Piatto Kebab Royale</h3>
+                            <p class="dish-card__desc">Doner tagliato al coltello, patatine dorate, insalata fresca mista e tris di salse: yogurt, piccante e tahina.</p>
+                        </div>
+                        <div class="dish-card__price">€12,00</div>
+                    </article>
+
+                    <!-- Piatto 22: Durum Roll -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62301042.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62309517.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Durum+Roll"
+                                 alt="Durum Roll: wrap di lavagna grigliata con doner, pomodoro e salsa yogurt"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Durum Roll</h3>
+                            <p class="dish-card__desc">Wrap di lavash grigliata con doner di pollo, pomodoro, cipolla rossa, lattuga e salsa yogurt alle erbe.</p>
+                        </div>
+                        <div class="dish-card__price">€10,00</div>
+                    </article>
+
+                    <!-- Piatto 23: Shawarma Chicken Pita -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62308383.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/3723e8c20-0780-467b-bb30-6363326d62309859.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Shawarma+Pita"
+                                 alt="Shawarma Chicken Pita: pita con pollo marinato, lattuga, pomodoro e avocado"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Shawarma Chicken Pita</h3>
+                            <p class="dish-card__desc">Pita con pollo marinato allo shawarma, lattuga riccia, pomodoro, avocado e salsa tahina leggera.</p>
+                        </div>
+                        <div class="dish-card__price">€10,50</div>
+                    </article>
+
+                    <!-- Piatto 24: Gyros Pita Greca -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/5723e8c20-0780-467b-bb30-6363326d62309738.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62303915.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Gyros+Pita"
+                                 alt="Gyros Pita Greca: pita con gyros, tzatziki, pomodoro, cipolla rossa e feta"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Gyros Pita Greca</h3>
+                            <p class="dish-card__desc">Pita con gyros di manzo e maiale, tzatziki cremoso, pomodoro, cipolla rossa, lattuga e feta sbriciolata.</p>
+                        </div>
+                        <div class="dish-card__price">€11,00</div>
+                    </article>
+
+                    <!-- Piatto 25: Maxi Kebab Panino -->
+                    <article class="dish-card reveal" data-category="kebab">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62304792.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62307914.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Maxi+Kebab"
+                                 alt="Maxi Kebab Panino: baguette artigianale farcita con doner, coleslaw e salsa bianca"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Maxi Kebab Panino</h3>
+                            <p class="dish-card__desc">Baguette artigianale croccante con doner misto, coleslaw, pomodoro, cetrioli e salsa bianca allo yogurt.</p>
+                        </div>
+                        <div class="dish-card__price">€9,00</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  MENU - SEZIONE 3: SFIZI E FRITTI (9 piatti)                    -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="menu-section" data-category="fritti">
+            <div class="container">
+                <header class="menu-section__header reveal">
+                    <span class="eyebrow">Da condividere</span>
+                    <h2 class="menu-section__title">Sfizi e Fritti</h2>
+                    <div class="menu-section__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="dishes-grid">
+                    <!-- Piatto 8: Onion Rings -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/040feb7a8-7f51-48a8-a29c-ac4baddd47c42087.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c42997.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Onion+Rings"
+                                 alt="Onion Rings: anelli di cipolla croccanti con salsa e lime"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Onion Rings</h3>
+                            <p class="dish-card__desc">Anelli di cipolla dorata in pastella alla birra artigianale, serviti con salsa BBQ affumicata e mayo al lime.</p>
+                        </div>
+                        <div class="dish-card__price">€6,00</div>
+                    </article>
+
+                    <!-- Piatto 9: Truffle Fries -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c43538.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c47539.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Truffle+Fries"
+                                 alt="Truffle Fries: patate rustiche con scaglie di tartufo e parmigiano"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Truffle Fries</h3>
+                            <p class="dish-card__desc">Patate rustiche a doppio taglio, olio al tartufo nero, parmigiano reggiano 24 mesi e prezzemolo fresco.</p>
+                        </div>
+                        <div class="dish-card__price">€7,50</div>
+                        <span class="dish-card__badge">Best Seller</span>
+                    </article>
+
+                    <!-- Piatto 10: Mozza Sticks -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c43473.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/340feb7a8-7f51-48a8-a29c-ac4baddd47c49808.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Mozza+Sticks"
+                                 alt="Mozza Sticks: bastoncini di mozzarella filante con salsa marinara"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Mozza Sticks</h3>
+                            <p class="dish-card__desc">Bastoncini di mozzarella di bufala filante, panatura croccante alle erbe mediterranee con salsa marinara.</p>
+                        </div>
+                        <div class="dish-card__price">€6,50</div>
+                    </article>
+
+                    <!-- Piatto 11: Jalapeño Poppers -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c41589.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c46323.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Jalapeno+Poppers"
+                                 alt="Jalapeño Poppers: peperoncini impanati ripieni di formaggio fuso"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Jalapeño Poppers</h3>
+                            <p class="dish-card__desc">Peperoncini jalapeños ripieni di cheddar e crema di formaggio, panati e fritti, serviti con ranch dressing.</p>
+                        </div>
+                        <div class="dish-card__price">€7,00</div>
+                    </article>
+
+                    <!-- Piatto 26: BBQ Wings Inferno -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62304165.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/5723e8c20-0780-467b-bb30-6363326d62302560.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=BBQ+Wings"
+                                 alt="BBQ Wings Inferno: alette di pollo glassate alla salsa BBQ con cipollotto"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">BBQ Wings Inferno</h3>
+                            <p class="dish-card__desc">Alette di pollo glassate al BBQ affumicato, cotte a bassa temperatura, con cipollotto fresco e peperoncino.</p>
+                        </div>
+                        <div class="dish-card__price">€8,50</div>
+                        <span class="dish-card__badge">Best Seller</span>
+                    </article>
+
+                    <!-- Piatto 27: Crocchette della Nonna -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62304037.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/0723e8c20-0780-467b-bb30-6363326d62305117.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Crocchette"
+                                 alt="Crocchette della Nonna: crocchette di patate dorate con panatura croccante"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Crocchette della Nonna</h3>
+                            <p class="dish-card__desc">Crocchette di patate fatte a mano con cuore filante, panatura panko dorata, servite con mayo al limone.</p>
+                        </div>
+                        <div class="dish-card__price">€5,50</div>
+                    </article>
+
+                    <!-- Piatto 28: Wedges Paprika -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62302944.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/5723e8c20-0780-467b-bb30-6363326d62302560.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Wedges"
+                                 alt="Wedges Paprika: spicchi di patate al forno con paprika e salsa sour cream"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Wedges Paprika</h3>
+                            <p class="dish-card__desc">Spicchi di patate rustiche al forno con paprika affumicata, sale Maldon e dip di sour cream alle erbe.</p>
+                        </div>
+                        <div class="dish-card__price">€6,00</div>
+                    </article>
+
+                    <!-- Piatto 29: Nuggets Croccanti -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62305763.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62302265.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Nuggets"
+                                 alt="Nuggets Croccanti: nuggets di pollo artigianali con salsa honey mustard"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Nuggets Croccanti</h3>
+                            <p class="dish-card__desc">Nuggets di pollo fatti in casa con panatura croccante alle spezie, serviti con salsa honey mustard.</p>
+                        </div>
+                        <div class="dish-card__price">€6,50</div>
+                    </article>
+
+                    <!-- Piatto 30: Calamari Fritti -->
+                    <article class="dish-card reveal" data-category="fritti">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62304924.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62305819.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Calamari+Fritti"
+                                 alt="Calamari Fritti: anelli di calamaro fritti croccanti con mayo al limone"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Calamari Fritti</h3>
+                            <p class="dish-card__desc">Anelli di calamaro fritti in pastella leggera, croccanti e asciutti, con mayo al limone e spicchio fresco.</p>
+                        </div>
+                        <div class="dish-card__price">€8,00</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  MENU - SEZIONE 4: BEVANDE (9 piatti)                           -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="menu-section" data-category="beverage">
+            <div class="container">
+                <header class="menu-section__header reveal">
+                    <span class="eyebrow">Per accompagnare</span>
+                    <h2 class="menu-section__title">Bevande</h2>
+                    <div class="menu-section__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="dishes-grid">
+                    <!-- Piatto 12: Craft Beer IPA -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c47171.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c43761.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Craft+Beer"
+                                 alt="Craft Beer IPA: bottiglia di birra artigianale India Pale Ale"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Craft Beer IPA</h3>
+                            <p class="dish-card__desc">Birra artigianale IPA locale, note agrumate e luppolo americano. Bottiglia 33cl servita ghiacciata.</p>
+                        </div>
+                        <div class="dish-card__price">€5,50</div>
+                    </article>
+
+                    <!-- Piatto 13: Limonata della Casa -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/440feb7a8-7f51-48a8-a29c-ac4baddd47c49511.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/340feb7a8-7f51-48a8-a29c-ac4baddd47c49090.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Limonata"
+                                 alt="Limonata della Casa: limonata fresca con menta e zenzero"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Limonata della Casa</h3>
+                            <p class="dish-card__desc">Limoni di Sicilia, zenzero fresco, menta e un pizzico di sale Maldon. Caraffa 50cl.</p>
+                        </div>
+                        <div class="dish-card__price">€4,50</div>
+                    </article>
+
+                    <!-- Piatto 14: Ice Tea Pesca -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/540feb7a8-7f51-48a8-a29c-ac4baddd47c42791.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/140feb7a8-7f51-48a8-a29c-ac4baddd47c41457.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Ice+Tea"
+                                 alt="Ice Tea Pesca: tè freddo alla pesca con ghiaccio e menta"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Ice Tea Pesca</h3>
+                            <p class="dish-card__desc">Tè nero infuso a freddo con pesche mature e vaniglia. Caraffa 50cl con ghiaccio.</p>
+                        </div>
+                        <div class="dish-card__price">€4,00</div>
+                    </article>
+
+                    <!-- Piatto 15: Acqua -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/240feb7a8-7f51-48a8-a29c-ac4baddd47c49472.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/040feb7a8-7f51-48a8-a29c-ac4baddd47c46189.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Acqua"
+                                 alt="Acqua naturale o frizzante servita in bicchiere"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Acqua Naturale / Frizzante</h3>
+                            <p class="dish-card__desc">Acqua microfiltrata o minerale naturale, bottiglia in vetro 50cl.</p>
+                        </div>
+                        <div class="dish-card__price">€2,50</div>
+                    </article>
+
+                    <!-- Piatto 31: Milkshake Fragola -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62305221.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62303326.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Milkshake"
+                                 alt="Milkshake Fragola: frullato cremoso alla fragola con panna montata"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Milkshake Fragola</h3>
+                            <p class="dish-card__desc">Frullato cremoso con fragole fresche, gelato fiordilatte, panna montata e ciliegia candita.</p>
+                        </div>
+                        <div class="dish-card__price">€5,00</div>
+                    </article>
+
+                    <!-- Piatto 32: Spremuta d'Arancia -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/4723e8c20-0780-467b-bb30-6363326d62304842.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/0723e8c20-0780-467b-bb30-6363326d62302140.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Spremuta"
+                                 alt="Spremuta d'Arancia: succo d'arancia fresco in bottiglia di vetro"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Spremuta d'Arancia</h3>
+                            <p class="dish-card__desc">Succo di arance siciliane spremuto al momento, senza zuccheri aggiunti. Bottiglietta 25cl.</p>
+                        </div>
+                        <div class="dish-card__price">€4,00</div>
+                    </article>
+
+                    <!-- Piatto 33: Mango Smoothie -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/2723e8c20-0780-467b-bb30-6363326d62301701.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/3723e8c20-0780-467b-bb30-6363326d62302792.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Mango+Smoothie"
+                                 alt="Mango Smoothie: frullato tropicale al mango con menta e lime"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Mango Smoothie</h3>
+                            <p class="dish-card__desc">Frullato tropicale di mango maturo, yogurt greco, menta fresca e un tocco di lime.</p>
+                        </div>
+                        <div class="dish-card__price">€5,00</div>
+                    </article>
+
+                    <!-- Piatto 34: Cola Ghiaccio & Lime -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/0723e8c20-0780-467b-bb30-6363326d62303584.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/3723e8c20-0780-467b-bb30-6363326d62304626.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Cola"
+                                 alt="Cola Ghiaccio & Lime: cola classica servita con ghiaccio e lime"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Cola Ghiaccio &amp; Lime</h3>
+                            <p class="dish-card__desc">Cola classica servita in bicchiere alto con abbondante ghiaccio e fettina di lime fresco. 40cl.</p>
+                        </div>
+                        <div class="dish-card__price">€3,50</div>
+                    </article>
+
+                    <!-- Piatto 35: Ginger Beer Artigianale -->
+                    <article class="dish-card reveal" data-category="beverage">
+                        <div class="dish-card__image">
+                            <img src="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/5723e8c20-0780-467b-bb30-6363326d62301100.png"
+                                 data-fb1="https://image.qwenlm.ai/public_source/b676a203-4b9c-4ab9-b3c3-db917ea0b78c/1723e8c20-0780-467b-bb30-6363326d62305986.png"
+                                 data-fb2="https://placehold.co/400x400/222222/FF6B1A?text=Ginger+Beer"
+                                 alt="Ginger Beer Artigianale: bibita allo zenzero con lime e menta"
+                                 loading="lazy" decoding="async">
+                        </div>
+                        <div class="dish-card__body">
+                            <h3 class="dish-card__name">Ginger Beer Artigianale</h3>
+                            <p class="dish-card__desc">Ginger beer prodotta da un birrificio locale, note piccanti di zenzero, lime e menta. 33cl.</p>
+                        </div>
+                        <div class="dish-card__price">€5,00</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  SEZIONE "DOVE SIAMO" - Mappa vettoriale con strade e nomi      -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="location" id="location">
+            <div class="container">
+                <header class="menu-section__header reveal">
+                    <span class="eyebrow">Vieni a trovarci</span>
+                    <h2 class="menu-section__title">Dove Siamo</h2>
+                    <div class="menu-section__divider" aria-hidden="true"></div>
+                </header>
+
+                <div class="location-card reveal">
+                    <div class="location-card__map">
+                        <!-- ── MAPPA SVG: isolati, strade, parco, piazza, nomi vie ── -->
+                        <svg class="map-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice"
+                             role="img" aria-label="Mappa stilizzata del quartiere con la posizione di Brace and Co in Via della Brace 42">
+
+                            <!-- Livello 0: tessuto urbano (isolati) -->
+                            <rect width="800" height="500" fill="#211C16"/>
+
+                            <!-- Livello 1: edifici decorativi -->
+                            <g fill="#191410" stroke="#2A241C" stroke-width="1">
+                                <rect x="40"  y="36"  width="86"  height="44" rx="4"/>
+                                <rect x="206" y="140" width="52"  height="66" rx="4"/>
+                                <rect x="318" y="34"  width="52"  height="46" rx="4"/>
+                                <rect x="438" y="336" width="56"  height="34" rx="4"/>
+                                <rect x="660" y="416" width="92"  height="46" rx="4"/>
+                                <rect x="56"  y="416" width="76"  height="46" rx="4"/>
+                                <rect x="696" y="40"  width="64"  height="36" rx="4"/>
+                                <rect x="318" y="416" width="52"  height="46" rx="4"/>
+                            </g>
+
+                            <!-- Livello 2: parco pubblico con alberi -->
+                            <g>
+                                <rect x="527" y="122" width="91" height="116" rx="10" fill="#1C2418"/>
+                                <g fill="#263320">
+                                    <circle cx="548" cy="150" r="7"/>
+                                    <circle cx="576" cy="172" r="9"/>
+                                    <circle cx="598" cy="144" r="6"/>
+                                    <circle cx="556" cy="206" r="8"/>
+                                    <circle cx="594" cy="212" r="6"/>
+                                </g>
+                                <text x="572" y="186" text-anchor="middle" font-family="Caveat, cursive"
+                                      font-size="15" fill="#7E9B6A">Giardini della Griglia</text>
+                            </g>
+
+                            <!-- Livello 3: casing strade (bordo scuro di separazione) -->
+                            <g stroke="#100D09" fill="none" stroke-linecap="round">
+                                <path d="M0 250 H800"  stroke-width="34"/>
+                                <path d="M400 0 V500"  stroke-width="34"/>
+                                <path d="M0 110 H800"  stroke-width="24"/>
+                                <path d="M0 390 H800"  stroke-width="24"/>
+                                <path d="M170 0 V500"  stroke-width="24"/>
+                                <path d="M630 0 V500"  stroke-width="24"/>
+                                <path d="M285 0 V500"  stroke-width="18"/>
+                                <path d="M515 0 V500"  stroke-width="18"/>
+                                <path d="M0 320 H800"  stroke-width="18"/>
+                            </g>
+
+                            <!-- Livello 4: manto stradale - strade TERZIARIE -->
+                            <g stroke="#332E25" fill="none" stroke-linecap="round">
+                                <path d="M285 0 V500" stroke-width="10"/>
+                                <path d="M515 0 V500" stroke-width="10"/>
+                                <path d="M0 320 H800" stroke-width="10"/>
+                            </g>
+
+                            <!-- Livello 5: manto stradale - strade SECONDARIE -->
+                            <g stroke="#453F33" fill="none" stroke-linecap="round">
+                                <path d="M0 110 H800" stroke-width="16"/>
+                                <path d="M0 390 H800" stroke-width="16"/>
+                                <path d="M170 0 V500" stroke-width="16"/>
+                                <path d="M630 0 V500" stroke-width="16"/>
+                            </g>
+
+                            <!-- Livello 6: manto stradale - strade PRINCIPALI -->
+                            <g stroke="#6B6250" fill="none" stroke-linecap="round">
+                                <path d="M0 250 H800" stroke-width="26"/>
+                                <path d="M400 0 V500" stroke-width="26"/>
+                            </g>
+
+                            <!-- Livello 7: linea di mezzeria tratteggiata (principali) -->
+                            <g stroke="#D8C79A" stroke-width="2" stroke-dasharray="16 12" opacity="0.5" fill="none">
+                                <path d="M0 250 H800"/>
+                                <path d="M400 0 V500"/>
+                            </g>
+
+                            <!-- Livello 8: piazza centrale (rotatoria) -->
+                            <circle cx="400" cy="250" r="44" fill="#453F33" stroke="#100D09" stroke-width="6"/>
+                            <circle cx="400" cy="250" r="16" fill="#211C16" stroke="#332E25" stroke-width="2"/>
+
+                            <!-- Livello 9: NOMI DELLE VIE -->
+                            <g font-family="Inter, sans-serif" fill="#CFC5AE" opacity="0.85">
+                                <text x="60"  y="236" font-size="12" letter-spacing="3">VIA DELLA BRACE</text>
+                                <text x="560" y="236" font-size="12" letter-spacing="3">VIA DELLA BRACE</text>
+                                <text x="408" y="470" font-size="12" letter-spacing="3" transform="rotate(-90 408 470)">VIALE DEL FUOCO</text>
+                                <text x="90"  y="378" font-size="11" letter-spacing="2">VIA DEI SAPORI</text>
+                                <text x="178" y="240" font-size="11" letter-spacing="2" transform="rotate(-90 178 240)">VIA ROMA</text>
+                                <text x="638" y="480" font-size="11" letter-spacing="2" transform="rotate(-90 638 480)">VIA DEL MERCATO</text>
+                                <text x="300" y="312" font-size="10" letter-spacing="1.5" fill="#8F8672">Via delle Spezie</text>
+                                <text x="200" y="102" font-size="10" letter-spacing="1.5" fill="#8F8672">Via del Forno</text>
+                            </g>
+
+                            <!-- Livello 10: bussola -->
+                            <g>
+                                <circle cx="756" cy="46" r="17" fill="#211C15" stroke="#453F33" stroke-width="1.5"/>
+                                <path d="M756 34 L761 50 L756 46 L751 50 Z" fill="#FF6B1A"/>
+                                <text x="756" y="24" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#CFC5AE">N</text>
+                            </g>
+
+                            <!-- Livello 11: scala metrica -->
+                            <g stroke="#CFC5AE" stroke-width="2">
+                                <path d="M24 468 H104"/>
+                                <path d="M24 462 V468"/>
+                                <path d="M104 462 V468"/>
+                            </g>
+                            <text x="24" y="456" font-family="Inter, sans-serif" font-size="11" fill="#A99F8A">100 m</text>
+                        </svg>
+
+                        <!-- Overlay HTML: etichetta, impulso e pin -->
+                        <div class="map-chip"><span class="map-chip__dot"></span>Brace &amp; Co.</div>
+                        <div class="location-card__pulse" aria-hidden="true"></div>
+                        <div class="location-card__pin" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="location-card__info">
+                        <div class="location-card__row">
+                            <div class="location-card__icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <div class="location-card__label">Indirizzo</div>
+                                <div class="location-card__value">Via della Brace, 42<br>20123 Milano (MI)</div>
+                            </div>
+                        </div>
+
+                        <div class="location-card__row">
+                            <div class="location-card__icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div>
+                                <div class="location-card__label">Orari di apertura</div>
+                                <div class="location-card__value"><strong>Mar – Dom</strong>: 12:00 – 15:00 / 18:30 – 23:30<br><strong>Lunedì</strong>: Chiuso</div>
+                            </div>
+                        </div>
+
+                        <div class="location-card__row">
+                            <div class="location-card__icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <div class="location-card__label">Telefono</div>
+                                <div class="location-card__value">+39 02 1234 5678</div>
+                            </div>
+                        </div>
+
+                        <a href="https://www.google.com/maps/search/?api=1&query=Via+della+Brace+42+Milano"
+                           target="_blank" rel="noopener noreferrer"
+                           class="btn btn--primary location-card__cta">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                            Portami qui
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!--  SOCIAL BAR                                                     -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section class="socials" aria-label="Seguici sui social">
+            <a href="#" class="social-link" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="TikTok">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43V8.28a8.16 8.16 0 004.77 1.52V6.35a4.83 4.83 0 01-1.84-.66z"/></svg>
+            </a>
+            <a href="#" class="social-link" aria-label="WhatsApp">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </a>
+        </section>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  FOOTER                                                             -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__brand">BRACE &amp; CO.</div>
+            <div class="footer__vat">P.IVA 12345678901 · REA MI-1234567</div>
+            <ul class="footer__links">
+                <li><a href="#" class="footer__link" data-modal="privacy">Privacy Policy</a></li>
+                <li><a href="#" class="footer__link" data-modal="cookie">Cookie Policy</a></li>
+                <li><a href="#" class="footer__link" data-modal="terms">Termini di Servizio</a></li>
+            </ul>
+            <p class="footer__copy">© 2026 Brace &amp; Co. — Tutti i diritti riservati</p>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  MODALE UNICA (Privacy / Cookie / Termini)                          -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+        <div class="modal__content">
+            <button class="modal__close" data-close-modal aria-label="Chiudi">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <h3 class="modal__title" id="modal-title"></h3>
+            <div class="modal__body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  COOKIE BANNER                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <aside class="cookie-banner" id="cookieBanner" aria-labelledby="cookie-title" hidden>
+        <div class="cookie-banner__title" id="cookie-title">🍪 Cookie e Privacy</div>
+        <p class="cookie-banner__text">Utilizziamo cookie tecnici e, previo consenso, cookie analitici e di profilazione per migliorare la tua esperienza.</p>
+        <div class="cookie-banner__actions">
+            <button class="btn btn--ghost"   data-cookie="reject">Solo necessari</button>
+            <button class="btn btn--primary" data-cookie="accept">Accetta tutti</button>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  SCRIPT - Vanilla JS                                                -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+
+        /* ── A. FILTRO CATEGORIE ─────────────────────────────────────────── */
+        const filterChips  = document.querySelectorAll('.filter-chip');
+        const menuSections = document.querySelectorAll('.menu-section[data-category]');
+
+        filterChips.forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                const filter = chip.dataset.filter;
+                filterChips.forEach(function (c) {
+                    c.classList.toggle('is-active', c === chip);
+                    c.setAttribute('aria-selected', c === chip ? 'true' : 'false');
+                });
+                menuSections.forEach(function (section) {
+                    const match = (filter === 'all') || (section.dataset.category === filter);
+                    section.style.display = match ? '' : 'none';
+                    if (match) { section.style.animation = 'fadeUp 0.5s ease-out'; }
+                });
+            });
+        });
+
+        /* ── B. SCROLL REVEAL ────────────────────────────────────────────── */
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry, i) {
+                if (entry.isIntersecting) {
+                    setTimeout(function () { entry.target.classList.add('is-visible'); }, i * 60);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+
+        /* ── C. SISTEMA MODALI ───────────────────────────────────────────── */
+        const modal      = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody  = document.getElementById('modal-body');
+
+        const modalContents = {
+            privacy: {
+                title: 'Privacy Policy',
+                body: '<p>La presente Privacy Policy descrive come <strong>Brace &amp; Co.</strong> raccoglie, utilizza e protegge i dati personali degli utenti che visitano questo menu digitale.</p><h4>Titolare del trattamento</h4><p>Brace &amp; Co. S.r.l. · Via della Brace 42, 20123 Milano · P.IVA 12345678901</p><h4>Dati raccolti</h4><p>Raccogliamo esclusivamente dati di navigazione tecnici (cookie) necessari al funzionamento del sito. Nessun dato personale è richiesto per la consultazione del menu.</p><h4>I tuoi diritti</h4><p>Ai sensi del GDPR (Reg. UE 2016/679) hai diritto di accedere, rettificare e cancellare i tuoi dati. Scrivi a: privacy@braceandco.it</p>'
+            },
+            cookie: {
+                title: 'Cookie Policy',
+                body: '<p>I cookie sono piccoli file di testo salvati sul tuo dispositivo durante la navigazione.</p><h4>Cookie tecnici</h4><p>Necessari al funzionamento del sito (preferenze, filtri). Non richiedono consenso.</p><h4>Cookie analitici (previo consenso)</h4><p>Statistiche anonime sull\'uso del menu per migliorarlo.</p><h4>Gestione preferenze</h4><p>Puoi modificare le preferenze in qualsiasi momento dal banner cookie.</p>'
+            },
+            terms: {
+                title: 'Termini di Servizio',
+                body: '<p>L\'utilizzo di questo menu digitale implica l\'accettazione dei presenti Termini.</p><h4>Contenuti</h4><p>Testi, immagini e prezzi sono di proprietà di Brace &amp; Co. e possono subire variazioni senza preavviso.</p><h4>Limitazione di responsabilità</h4><p>Il menu è fornito "as is": non rispondiamo di interruzioni del servizio o imprecisioni.</p><h4>Legge applicabile</h4><p>Legge italiana; Foro competente: Milano.</p>'
+            }
+        };
+
+        function openModal(key) {
+            const data = modalContents[key];
+            if (!data) { return; }
+            modalTitle.textContent = data.title;
+            modalBody.innerHTML    = data.body;
+            modal.hidden = false;
+            requestAnimationFrame(function () { modal.classList.add('is-open'); });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+            setTimeout(function () { modal.hidden = true; }, 300);
+        }
+
+        document.querySelectorAll('[data-modal]').forEach(function (trigger) {
+            trigger.addEventListener('click', function (e) {
+                e.preventDefault();
+                openModal(trigger.dataset.modal);
+            });
+        });
+        document.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+        modal.addEventListener('click', function (e) { if (e.target === modal) { closeModal(); } });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeModal(); } });
+
+        /* ── D. COOKIE BANNER ────────────────────────────────────────────── */
+        const cookieBanner = document.getElementById('cookieBanner');
+        const COOKIE_KEY   = 'brace_cookie_consent';
+
+        function hideBanner() {
+            cookieBanner.classList.remove('is-visible');
+            setTimeout(function () { cookieBanner.hidden = true; }, 500);
+        }
+
+        if (!localStorage.getItem(COOKIE_KEY)) {
+            cookieBanner.hidden = false;
+            setTimeout(function () { cookieBanner.classList.add('is-visible'); }, 800);
+        }
+
+        document.querySelectorAll('[data-cookie]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                localStorage.setItem(COOKIE_KEY, JSON.stringify({ choice: btn.dataset.cookie, timestamp: Date.now() }));
+                hideBanner();
+            });
+        });
+
+        /* ── E. FALLBACK IMMAGINI A 3 LIVELLI (anti "immagine rotta") ────── */
+        document.addEventListener('error', function (e) {
+            const img = e.target;
+            if (!(img instanceof HTMLImageElement) || !img.hasAttribute('data-fb1')) { return; }
+            const stage = img.getAttribute('data-fb-stage') || '0';
+            if (stage === '0' && img.dataset.fb1) {
+                img.setAttribute('data-fb-stage', '1');
+                img.src = img.dataset.fb1;
+            } else if (stage === '1' && img.dataset.fb2) {
+                img.setAttribute('data-fb-stage', '2');
+                img.src = img.dataset.fb2;
+            } else {
+                img.removeAttribute('data-fb1'); /* evita loop */
+            }
+        }, true);
+
+    })();
+    </script>
+
+</body>
+</html>
